@@ -1,0 +1,24 @@
+[DONE] Record moves in proper chess notation and allow users to copy-paste the moves easily.
+Notes: Move list now renders in SAN format and includes a copy-to-clipboard button.
+
+[DONE] Add celebration animation when user wins.
+Notes: Added a lightweight confetti overlay animation when the human player wins by checkmate.
+
+[DEFERRED] Allow users to optionally login using magic link or Google.
+Reason: Requires auth provider setup, backend identity/session model, token verification, and protected API routes. This is a larger cross-cutting feature that should be implemented as a dedicated auth phase.
+
+[DONE] Add piece sound effects.
+Notes: Added synthesized Web Audio tones for move/capture/check and endgame outcomes.
+
+[DEFERRED] Allow users to play against each other instead of AI.
+Reason: Requires multiplayer session lifecycle, matchmaking/lobby model, authoritative move sync (likely WebSocket), reconnect handling, and anti-desync logic. This should be delivered as a separate multiplayer feature track.
+
+[DONE] Greedy should have configurable plys of search up to 10.
+Notes: v1 now supports configurable search depth 1-10 via engine options; frontend exposes plies selection for v1.
+
+[DONE] Change project name to stockreptile.
+Notes: Updated visible frontend branding, backend API title, and package/README labels.
+
+[DONE] When comparing engine moves, clicking on a specific move should highlight that move on the Board.
+Notes: Compare rows/move buttons are now clickable and selected move is highlighted on the board.
+

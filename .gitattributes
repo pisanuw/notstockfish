@@ -1,0 +1,2 @@
+backend/data/openings.bin filter=lfs diff=lfs merge=lfs -text
+backend/data/openings.json filter=lfs diff=lfs merge=lfs -text
