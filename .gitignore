@@ -1,0 +1,16 @@
+# Local Netlify folder
+.netlify
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
+
+# Local archive and extracted opening-book sources
+lichessdatabase.7z
+lichess.7z
+data_sources/

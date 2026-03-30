@@ -1,0 +1,435 @@
+/* ===== stockreptile — application styles ===== */
+
+/* Reset & base */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #212121;
+}
+
+/* ── Layout ─────────────────────────────────── */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background: #1a237e;
+  color: #fff;
+  padding: 12px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.app-header h1 { margin: 0; font-size: 1.5rem; }
+.app-header p  { margin: 0; opacity: 0.7; font-size: 0.9rem; }
+
+.health-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  border-bottom: 1px solid #d7dde7;
+  font-size: 0.82rem;
+}
+
+.health-banner-online {
+  background: #edf7ee;
+  color: #1f5d2d;
+}
+
+.health-banner-offline {
+  background: #fff1f1;
+  color: #8a1f1f;
+}
+
+.health-banner-checking {
+  background: #eef3ff;
+  color: #274690;
+}
+
+.health-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+  background: currentColor;
+}
+
+.health-banner-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.health-banner-button {
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.health-banner-button:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.board-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 0 0 auto;
+  width: 560px;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 320px;
+}
+
+/* ── Panel ───────────────────────────────────── */
+.panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.panel h3 { margin: 0 0 12px; font-size: 1rem; }
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.panel-header h3 { margin: 0; }
+
+.compact-panel {
+  padding: 10px 12px;
+}
+
+/* ── Buttons ─────────────────────────────────── */
+.btn {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary  { background: #1a237e; color: #fff; }
+.btn-secondary{ background: #e0e0e0; color: #333; }
+.btn-warning  { background: #ff8f00; color: #fff; }
+.btn-danger   { background: #c62828; color: #fff; }
+.btn-compare  { background: #4a148c; color: #fff; font-size: 0.8rem; }
+.btn:not(:disabled):hover { opacity: 0.85; }
+
+.pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  color: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ── Tabs ────────────────────────────────────── */
+.tabs { display: flex; gap: 4px; }
+.segmented-toggle { display: flex; gap: 6px; }
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px 6px 0 0;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+.tab-btn.active { background: #fff; border-bottom-color: #fff; font-weight: 600; }
+
+/* ── Status bar ──────────────────────────────── */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.status-label { font-weight: 600; }
+.status-label.game-over { color: #c62828; }
+.status-actions { display: flex; gap: 8px; }
+
+.clock-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.clock-card {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #dbe2ef;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.clock-card.active {
+  border-color: #1a237e;
+  background: #eef1ff;
+}
+
+.clock-name {
+  font-size: 0.76rem;
+  color: #67728c;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.clock-time {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── New game panel ──────────────────────────── */
+.new-game-panel h2 { margin: 0 0 12px; }
+.new-game-controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.new-game-controls label { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+.new-game-controls select { padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+
+.stack-xs { display: flex; flex-direction: column; gap: 4px; }
+.stack-sm { display: flex; flex-direction: column; gap: 8px; }
+.stack-md { display: flex; flex-direction: column; gap: 14px; }
+
+.inline-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.text-input,
+.text-area {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccd3df;
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+  color: inherit;
+}
+
+.text-area {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: #465066;
+}
+
+.tool-box {
+  border: 1px solid #e1e7f0;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f8fbff;
+}
+
+.path-preview {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: #31415c;
+  background: #fff;
+  border: 1px solid #dde5f1;
+  border-radius: 6px;
+  padding: 8px;
+  word-break: break-all;
+}
+
+/* ── Move history ────────────────────────────── */
+.move-history {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #555;
+  background: #fafafa;
+  border-radius: 4px;
+  padding: 6px 8px;
+  min-height: 28px;
+  word-break: break-all;
+}
+
+.move-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.move-history-text {
+  margin: 0;
+  max-height: 140px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.confetti {
+  --x: 50%;
+  --delay: 0s;
+  position: absolute;
+  top: -10px;
+  left: var(--x);
+  width: 8px;
+  height: 14px;
+  opacity: 0;
+  background: hsl(calc(var(--x) * 3.6), 80%, 55%);
+  transform: translateX(-50%) rotate(0deg);
+  animation: confetti-fall 1.9s ease-out var(--delay) forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -16px) rotate(0deg);
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + 24px), 110vh) rotate(680deg);
+  }
+}
+
+/* ── Engine selector ─────────────────────────── */
+.engine-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+.engine-detail { display: flex; flex-direction: column; gap: 6px; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  align-self: flex-start;
+}
+.engine-description { margin: 0; font-size: 0.85rem; color: #555; }
+.engine-meta { margin: 0; font-size: 0.78rem; color: #888; }
+
+/* ── Comparison table ────────────────────────── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+.compare-table th, .compare-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+.compare-table th { background: #f5f5f5; font-weight: 600; }
+.unimplemented-row { opacity: 0.5; font-style: italic; }
+.clickable-compare-row { cursor: pointer; }
+.clickable-compare-row:hover { background: #f8fbff; }
+.selected-compare-row { background: #e7f1ff; }
+.reasoning-cell { font-size: 0.75rem; color: #666; max-width: 200px; }
+
+.compare-move-btn {
+  border: none;
+  background: transparent;
+  color: #0d47a1;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.compare-move-btn:hover {
+  text-decoration: underline;
+}
+
+/* ── Training panel ──────────────────────────── */
+.training-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.83rem;
+  color: #555;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* ── Misc ────────────────────────────────────── */
+.muted { color: #9e9e9e; font-size: 0.85rem; }
+.error-msg { color: #c62828; font-size: 0.875rem; font-weight: 500; margin: 0; }
+
+@media (max-width: 980px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .board-section {
+    width: 100%;
+  }
+
+  .right-panel {
+    min-width: 0;
+  }
+
+  .inline-grid {
+    grid-template-columns: 1fr;
+  }
+}
