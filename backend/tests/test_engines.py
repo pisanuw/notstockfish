@@ -10,6 +10,7 @@ import pytest
 
 from engines.base import ChessEngine, MoveInfo
 from engines.v0_random import RandomEngine
+from engines.v1_search import GreedySearchEngine
 from engines.v2_minimax import MinimaxEngine
 from engines import ENGINES, get_engine, list_engines
 
@@ -215,3 +216,70 @@ class TestMinimaxSearchImprovements:
         assert info.reasoning is not None
         assert "quiescence" in info.reasoning.lower()
         assert "tt entries" in info.reasoning.lower()
+
+
+# ---------------------------------------------------------------------------
+# Deterministic engine behaviour on fixed FEN positions
+# ---------------------------------------------------------------------------
+
+class TestGreedyCaptures:
+    """v1 must always take a free hanging piece — no randomness can beat it."""
+
+    # White rook on e2, black knight on e4, no defenders.
+    # Rxe4 is the uniquely best greedy move (+3 material).
+    HANGING_KNIGHT = "4k3/8/8/8/4n3/8/4R3/4K3 w - - 0 1"
+
+    def test_takes_hanging_piece(self):
+        engine = GreedySearchEngine(plies=1)
+        board = chess.Board(self.HANGING_KNIGHT)
+        move = engine.get_move(board)
+        assert move == chess.Move.from_uci("e2e4"), (
+            f"v1 should capture the free knight (e2e4), got {move.uci()}"
+        )
+
+    def test_takes_hanging_piece_at_higher_plies(self):
+        engine = GreedySearchEngine(plies=2)
+        board = chess.Board(self.HANGING_KNIGHT)
+        move = engine.get_move(board)
+        assert move == chess.Move.from_uci("e2e4")
+
+    def test_captures_free_queen(self):
+        # White rook on d1, black queen on d5 undefended.
+        board = chess.Board("4k3/8/8/3q4/8/8/8/3RK3 w - - 0 1")
+        engine = GreedySearchEngine(plies=1)
+        move = engine.get_move(board)
+        assert move == chess.Move.from_uci("d1d5"), (
+            f"v1 should capture the free queen (d1d5), got {move.uci()}"
+        )
+
+
+class TestMinimaxFindsMate:
+    """v2 must find mate-in-one when given enough search depth."""
+
+    # Black king b8 trapped by own pawns on b7/c7; rook a2 delivers back-rank mate
+    # on a8 (unique legal mating move — rook on a1 is blocked by the a2 rook).
+    MATE_IN_ONE = "1k6/1pp5/8/8/8/8/R7/R6K w - - 0 1"
+
+    def test_finds_mate_in_one(self):
+        engine = MinimaxEngine(depth=2)
+        board = chess.Board(self.MATE_IN_ONE)
+        move = engine.get_move(board)
+        board.push(move)
+        assert board.is_checkmate(), f"v2 should deliver checkmate, played {move.uci()} which did not"
+
+    def test_finds_unique_mate_move(self):
+        engine = MinimaxEngine(depth=3)
+        board = chess.Board(self.MATE_IN_ONE)
+        move = engine.get_move(board)
+        assert move == chess.Move.from_uci("a2a8"), (
+            f"v2 should play the unique back-rank mate a2a8, got {move.uci()}"
+        )
+
+    def test_greedy_misses_positional_mate(self):
+        # v1 at 1-ply evaluates material only; a non-capture mate has the same
+        # material score as many other moves, so it is not guaranteed to find it.
+        # This test documents the capability gap between v1 and v2.
+        engine = GreedySearchEngine(plies=1)
+        board = chess.Board(self.MATE_IN_ONE)
+        move = engine.get_move(board)
+        assert move in board.legal_moves
